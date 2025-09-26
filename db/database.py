@@ -1,8 +1,6 @@
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy import create_engine,text
+from sqlalchemy.orm import sessionmaker,declarative_base
 from sqlalchemy.exc import SQLAlchemyError
-from sqlalchemy.orm import declarative_base
-from sqlalchemy import text
 import os
 from dotenv import load_dotenv
 

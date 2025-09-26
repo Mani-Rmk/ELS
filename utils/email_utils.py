@@ -2,25 +2,18 @@ import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from core.config import SMTP_SERVER, SMTP_PORT, EMAIL_ADDRESS, EMAIL_PASSWORD
+from passlib.context import CryptContext
 
 def send_email(to_email: str, subject: str, body_text: str, body_html: str = None, cc: list = None, bcc: list = None):
-    """
-    Send an email with plain text and optional HTML content.
-    - to_email: recipient email (string)
-    - subject: email subject
-    - body_text: plain text version of email
-    - body_html: optional HTML version
-    - cc: optional list of CC recipients
-    - bcc: optional list of BCC recipients
-    """
+
     msg = MIMEMultipart("alternative")
     msg["Subject"] = subject
     msg["From"] = EMAIL_ADDRESS
     msg["To"] = to_email
 
-    # # Add CC if provided
-    # if cc:
-    #     msg["Cc"] = ", ".join(cc)
+    # Add CC if provided
+    if cc:
+        msg["Cc"] = ", ".join(cc)
 
     # Attach plain text
     part1 = MIMEText(body_text, "plain")
@@ -48,3 +41,7 @@ def send_email(to_email: str, subject: str, body_text: str, body_html: str = Non
     except Exception as e:
         print(f"❌ Failed to send email to {to_email}: {e}")
         return False
+    
+def hash_password(password: str) -> str:
+    pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+    return pwd_context.hash(password)
